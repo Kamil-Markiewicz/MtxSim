@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MtxSim</string>
+    <string name="current_vp">Current Virtual Points:</string>
+    <string name="buy_vp">Buy VP</string>
+    <string name="zero_string">0</string>
+    <string name="obtained_items">Obtained Virtual Items:</string>
+    <string name="buy_items">Buy Virtual Items</string>
 </resources>
