@@ -5,4 +5,5 @@
     <string name="zero_string">0</string>
     <string name="obtained_items">Obtained Virtual Items:</string>
     <string name="buy_items">Buy Virtual Items</string>
+    <string name="ChooseVpAmount">Choose the amount of VP to buy:</string>
 </resources>
