@@ -33,29 +33,20 @@ class MainActivity : AppCompatActivity(), MainView {
         Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()
     }
 
-    fun onClickBuyVP(view: View){
-        buyVPDialog()
-    }
-
-    fun onClickBuyItem(view: View){
-        presenter.buyItem()
-    }
-
     private fun buyVPDialog(){
         val dialogBuilder = AlertDialog.Builder(this)
-        val pValues1 = PurchaseValues(2.0, 2)
-        //val pValues2 = PurchaseValues(5.0, 6)
-        //val pValues3 = PurchaseValues(10.0, 13)
-        //val pValues4 = PurchaseValues(20.0, 27)
-        //val pValues5 = PurchaseValues(50.0, 60)
-        //getVPValueString(pValues1)
-        dialogBuilder.setMessage(getString(R.string.ChooseVpAmount))
-            .setPositiveButton("Buy", DialogInterface.OnClickListener {
-                    dialog, id -> dialog.dismiss()
-                    presenter.buyVP(pValues1)
+        val pValues = presenter.getPurchaseValues()
+
+        var selection = 0
+        //dialogBuilder.setMessage(getString(R.string.ChooseVpAmount))
+        dialogBuilder.setSingleChoiceItems(getPvCharSeqArray(pValues), selection)
+            { _, i -> selection = i}
+        dialogBuilder.setPositiveButton("Buy", DialogInterface.OnClickListener {
+                    dialog, _ -> dialog.dismiss()
+                    presenter.buyVP(pValues[selection])
             })
-            .setNegativeButton("Cancel", DialogInterface.OnClickListener {
-                    dialog, id -> dialog.cancel()
+        dialogBuilder.setNegativeButton("Cancel", DialogInterface.OnClickListener {
+                    dialog, _ -> dialog.cancel()
             })
 
         val alert = dialogBuilder.create()
@@ -63,10 +54,29 @@ class MainActivity : AppCompatActivity(), MainView {
         alert.show()
     }
 
-    fun getVPValueString(pv: PurchaseValues): String {
+    private fun selectedVpValue(pvs: List<PurchaseValues>, selection: Int){
+        displayMessage(getPvString(pvs[selection]))
+    }
+
+    private fun getPvCharSeqArray(pvs: List<PurchaseValues>): Array<CharSequence> {
+        val strings = ArrayList<CharSequence>()
+        for(i in 0 until pvs.size)
+            strings.add(getPvString(pvs[i]))
+        return strings.toTypedArray()
+    }
+
+    private fun getPvString(pv: PurchaseValues): String {
         val value = pv.value
         val vp = pv.vpGiven
         return "$value" + " Euro for " + "$vp" + "VP"
+    }
+
+    fun onClickBuyVP(view: View){
+        buyVPDialog()
+    }
+
+    fun onClickBuyItem(view: View){
+        presenter.buyItem()
     }
 
     override fun onDestroy() {

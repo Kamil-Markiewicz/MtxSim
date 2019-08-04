@@ -21,14 +21,21 @@ class MainPresenter(private var mainView: MainView?, val model: IMainModel): IMa
     }
 
     override fun buyItem(){
-        val success = model.buyItem()
-        if(success) {
-            mainView?.updateVP()
-            mainView?.updateItems()
-            mainView?.displayMessage("You have purchased an item for 2VP")
+        if(model.getVpAmount() < model.getItemCost())
+            mainView?.displayMessage("Not enough VP to buy item!")
+        else {
+            val success = model.buyItem()
+            if (success) {
+                mainView?.updateVP()
+                mainView?.updateItems()
+                mainView?.displayMessage("You have purchased an item for 2VP!")
+            } else
+                mainView?.displayMessage("Error during purchasing item")
         }
-        else
-            mainView?.displayMessage("Error during purchasing item")
+    }
+
+    override fun getPurchaseValues(): List<PurchaseValues> {
+        return model.getPurchaseValues()
     }
 
     override fun onDestroy() {

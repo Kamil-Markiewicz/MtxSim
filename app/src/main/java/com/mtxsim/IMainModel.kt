@@ -5,4 +5,6 @@ interface IMainModel{
     fun buyItem(): Boolean
     fun getVpAmount(): Int
     fun getItemAmount(): Int
+    fun getPurchaseValues(): List<PurchaseValues>
+    fun getItemCost(): Int
 }
