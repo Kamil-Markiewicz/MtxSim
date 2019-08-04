@@ -7,6 +7,8 @@ import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import android.content.DialogInterface
+import android.view.LayoutInflater
+import kotlinx.android.synthetic.main.view_items_dialog.view.*
 
 class MainActivity : AppCompatActivity(), MainView {
 
@@ -26,7 +28,7 @@ class MainActivity : AppCompatActivity(), MainView {
 
     override fun updateItems() {
         val counterItemText = findViewById<TextView>(R.id.textViewItemsCount)
-        counterItemText.text = presenter.getItems().toString()
+        counterItemText.text = presenter.getItemCount().toString()
     }
 
     override fun displayMessage(msg: String) {
@@ -54,6 +56,22 @@ class MainActivity : AppCompatActivity(), MainView {
         alert.show()
     }
 
+    private fun viewItemsDialog(){
+        val mDialogView = LayoutInflater.from(this).inflate(R.layout.view_items_dialog, null)
+
+
+        val mBuilder = AlertDialog.Builder(this)
+            .setView(mDialogView)
+
+        val  mAlertDialog = mBuilder.show()
+
+        mDialogView.buttonReturn.setOnClickListener {
+            //dismiss dialog
+            mAlertDialog.dismiss()
+        }
+        mDialogView.textViewItemList.text = presenter.getItems().toString()
+    }
+
     private fun selectedVpValue(pvs: List<PurchaseValues>, selection: Int){
         displayMessage(getPvString(pvs[selection]))
     }
@@ -68,7 +86,7 @@ class MainActivity : AppCompatActivity(), MainView {
     private fun getPvString(pv: PurchaseValues): String {
         val value = pv.value
         val vp = pv.vpGiven
-        return "$value" + " Euro for " + "$vp" + "VP"
+        return "€" + "$value" + " for " + "$vp" + "VP"
     }
 
     fun onClickBuyVP(view: View){
@@ -77,6 +95,10 @@ class MainActivity : AppCompatActivity(), MainView {
 
     fun onClickBuyItem(view: View){
         presenter.buyItem()
+    }
+
+    fun onClickViewItemList(view: View){
+        viewItemsDialog()
     }
 
     override fun onDestroy() {

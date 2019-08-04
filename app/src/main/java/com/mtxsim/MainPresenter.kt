@@ -6,7 +6,11 @@ class MainPresenter(private var mainView: MainView?, val model: IMainModel): IMa
         return model.getVpAmount()
     }
 
-    override fun getItems(): Int{
+    override fun getItems(): ArrayList<String>{
+        return model.getItems()
+    }
+
+    override fun getItemCount(): Int{
         return model.getItemAmount()
     }
 
@@ -14,7 +18,7 @@ class MainPresenter(private var mainView: MainView?, val model: IMainModel): IMa
         val success = model.buyVP(pv)
         if(success){
             mainView?.updateVP()
-            mainView?.displayMessage("You have purchased " + pv.vpGiven + "VP")
+            mainView?.displayMessage("You have purchased:\n" + pv.vpGiven + "VP")
         }
         else
             mainView?.displayMessage("Error during purchasing VP")
@@ -24,11 +28,11 @@ class MainPresenter(private var mainView: MainView?, val model: IMainModel): IMa
         if(model.getVpAmount() < model.getItemCost())
             mainView?.displayMessage("Not enough VP to buy item!")
         else {
-            val success = model.buyItem()
-            if (success) {
+            val itemString = model.buyItem()
+            if (itemString != "") {
                 mainView?.updateVP()
                 mainView?.updateItems()
-                mainView?.displayMessage("You have purchased an item for 2VP!")
+                mainView?.displayMessage("You have received:\n$itemString!")
             } else
                 mainView?.displayMessage("Error during purchasing item")
         }

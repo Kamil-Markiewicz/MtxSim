@@ -6,4 +6,6 @@
     <string name="obtained_items">Obtained Virtual Items:</string>
     <string name="buy_items">Buy Virtual Items</string>
     <string name="ChooseVpAmount">Choose the amount of VP to buy:</string>
+    <string name="purchased_items_list">Purchased Items List:</string>
+    <string name="back">Return</string>
 </resources>
