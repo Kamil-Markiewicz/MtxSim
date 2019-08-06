@@ -9,4 +9,5 @@ interface IMainModel{
     fun getPurchaseValues(): List<PurchaseValues>
     fun getItemCost(): Int
     fun generateRandomItem(): String
+    fun debugWipe()
 }

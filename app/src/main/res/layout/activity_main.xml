@@ -47,10 +47,17 @@
         android:text="@string/buy_items" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/buttonViewItems"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="onClickViewItemList"
-        android:text="View Item List" />
+        android:text="@string/view_item_list" />
+
+    <Button
+        android:id="@+id/buttonDebug"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/debug"
+        android:visibility="gone" />
 
 </LinearLayout>

@@ -8,4 +8,7 @@
     <string name="ChooseVpAmount">Choose the amount of VP to buy:</string>
     <string name="purchased_items_list">Purchased Items List:</string>
     <string name="back">Return</string>
+    <string name="vp_key">ownedVP</string>
+    <string name="view_item_list">View Item List</string>
+    <string name="debug">Debug</string>
 </resources>

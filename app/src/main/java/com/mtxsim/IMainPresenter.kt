@@ -8,6 +8,7 @@ interface IMainPresenter {
     fun buyVP(pv: PurchaseValues)
     fun buyItem()
     fun getPurchaseValues(): List<PurchaseValues>
+    fun debugWipe()
 
     fun onDestroy()
 }

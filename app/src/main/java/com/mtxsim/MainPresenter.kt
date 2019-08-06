@@ -42,6 +42,11 @@ class MainPresenter(private var mainView: MainView?, val model: IMainModel): IMa
         return model.getPurchaseValues()
     }
 
+    override fun debugWipe() {
+        model.debugWipe()
+        mainView?.updateVP()
+    }
+
     override fun onDestroy() {
         mainView = null
     }

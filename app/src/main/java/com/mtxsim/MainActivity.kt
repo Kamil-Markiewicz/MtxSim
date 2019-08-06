@@ -1,6 +1,7 @@
 package com.mtxsim
 
 import android.app.AlertDialog
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -8,27 +9,34 @@ import android.widget.TextView
 import android.widget.Toast
 import android.content.DialogInterface
 import android.view.LayoutInflater
+import android.widget.Button
 import kotlinx.android.synthetic.main.view_items_dialog.view.*
 
 class MainActivity : AppCompatActivity(), MainView {
 
-    private val presenter = MainPresenter(this, MainModelVariables())
+    private val DEBUG_MODE = true
+
+    private lateinit var presenter: IMainPresenter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        if(DEBUG_MODE) {
+            val buttonDebug = findViewById<Button>(R.id.buttonDebug)
+            buttonDebug.visibility = View.VISIBLE
+            buttonDebug.setOnClickListener{presenter.debugWipe()}
+        }
+        presenter = MainPresenter(this, MainModel(this.getPreferences(Context.MODE_PRIVATE)))
         updateVP()
         updateItems()
     }
 
     override fun updateVP() {
-        val counterText = findViewById<TextView>(R.id.textViewVPCount)
-        counterText.text = presenter.getVP().toString()
+        findViewById<TextView>(R.id.textViewVPCount).text = presenter.getVP().toString()
     }
 
     override fun updateItems() {
-        val counterItemText = findViewById<TextView>(R.id.textViewItemsCount)
-        counterItemText.text = presenter.getItemCount().toString()
+        findViewById<TextView>(R.id.textViewItemsCount).text = presenter.getItemCount().toString()
     }
 
     override fun displayMessage(msg: String) {
