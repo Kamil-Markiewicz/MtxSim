@@ -21,12 +21,12 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        presenter = MainPresenter(this, MainModel(this.getPreferences(Context.MODE_PRIVATE)))
+
         if(DEBUG_MODE) {
             val buttonDebug = findViewById<Button>(R.id.buttonDebug)
             buttonDebug.visibility = View.VISIBLE
-            buttonDebug.setOnClickListener{presenter.debugWipe()}
         }
-        presenter = MainPresenter(this, MainModel(this.getPreferences(Context.MODE_PRIVATE)))
         updateVP()
         updateItems()
     }
@@ -107,6 +107,10 @@ class MainActivity : AppCompatActivity(), MainView {
 
     fun onClickViewItemList(view: View){
         viewItemsDialog()
+    }
+
+    fun onClickDebug(view: View){
+        presenter.debugWipe()
     }
 
     override fun onDestroy() {

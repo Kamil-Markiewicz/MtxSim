@@ -18,28 +18,25 @@ class MainModel(private var prefs: SharedPreferences): IMainModel{
     private var items: ArrayList<String> = ArrayList()
 
     override fun buyVP(pv: PurchaseValues): Boolean {
-        loadProgress()
-        vp += pv.vpGiven
-        saveProgress()
+        var virtualPoints = loadVP()
+        virtualPoints += pv.vpGiven
+        saveVP(virtualPoints)
         return true
     }
 
     override fun buyItem(): String {
-        loadProgress()
-        if(vp >= 2){
+        var virtualPoints = loadVP()
+        if(virtualPoints >= ITEM_COST){
             val generatedItem = generateRandomItem()
             items.add(generatedItem)
-            vp -= 2
-            saveProgress()
+            virtualPoints -= ITEM_COST
+            saveVP(virtualPoints)
             return generatedItem
         }
         return ""
     }
 
-    override fun getVpAmount(): Int {
-        loadProgress()
-        return vp
-    }
+    override fun getVpAmount(): Int = loadVP()
 
     override fun getItemAmount(): Int {
         return items.size
@@ -69,8 +66,7 @@ class MainModel(private var prefs: SharedPreferences): IMainModel{
     }
 
     override fun debugWipe() {
-        vp = 0
-        saveProgress()
+        saveVP(0)
     }
 
     private fun saveProgress() {
@@ -78,12 +74,19 @@ class MainModel(private var prefs: SharedPreferences): IMainModel{
             putInt(VP_KEY, vp)
             apply()
         }
-        val debugCheck = prefs.getInt(VP_KEY, 0)
-        print(debugCheck)
     }
 
     private fun loadProgress(){
-        vp = prefs.getInt(VP_KEY, 0)
+        vp = loadVP()
+    }
+
+    private fun loadVP(): Int = prefs.getInt(VP_KEY, 0)
+
+    private fun saveVP(virtualPoints: Int){
+        with (prefs.edit()) {
+            putInt(VP_KEY, virtualPoints)
+            apply()
+        }
     }
 
 }

@@ -1,63 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/textViewVPTip"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/current_vp" />
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textViewVPCount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/zero_string" />
+        <TextView
+            android:id="@+id/textViewVPTip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/current_vp" />
 
-    <Button
-        android:id="@+id/buttonBuyVP"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onClickBuyVP"
-        android:text="@string/buy_vp" />
+        <TextView
+            android:id="@+id/textViewVPCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/zero_string" />
 
-    <TextView
-        android:id="@+id/textViewItemsTip"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/obtained_items" />
+        <Button
+            android:id="@+id/buttonBuyVP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClickBuyVP"
+            android:text="@string/buy_vp" />
 
-    <TextView
-        android:id="@+id/textViewItemsCount"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/zero_string" />
+        <TextView
+            android:id="@+id/textViewItemsTip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/obtained_items" />
 
-    <Button
-        android:id="@+id/buttonBuyItem"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onClickBuyItem"
-        android:text="@string/buy_items" />
+        <TextView
+            android:id="@+id/textViewItemsCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/zero_string" />
 
-    <Button
-        android:id="@+id/buttonViewItems"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="onClickViewItemList"
-        android:text="@string/view_item_list" />
+        <Button
+            android:id="@+id/buttonBuyItem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClickBuyItem"
+            android:text="@string/buy_items" />
 
-    <Button
-        android:id="@+id/buttonDebug"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/debug"
-        android:visibility="gone" />
+        <Button
+            android:id="@+id/buttonViewItems"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClickViewItemList"
+            android:text="@string/view_item_list" />
 
-</LinearLayout>
+        <Button
+            android:id="@+id/buttonDebug"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/debug"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+</ScrollView>
