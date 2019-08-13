@@ -14,6 +14,8 @@ class MainPresenter(private var mainView: MainView?, val model: IMainModel): IMa
         return model.getItemAmount()
     }
 
+    override fun getItemCost(): Int = model.getItemCost()
+
     override fun buyVP(pv: PurchaseValues){
         val success = model.buyVP(pv)
         if(success){

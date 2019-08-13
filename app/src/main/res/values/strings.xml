@@ -4,7 +4,7 @@
     <string name="buy_vp">Buy VP</string>
     <string name="zero_string">0</string>
     <string name="obtained_items">Obtained Virtual Items:</string>
-    <string name="buy_items">Buy Virtual Items</string>
+    <string name="buy_items">Buy Virtual Item</string>
     <string name="ChooseVpAmount">Choose the amount of VP to buy:</string>
     <string name="purchased_items_list">Purchased Items List:</string>
     <string name="back">Return</string>

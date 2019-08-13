@@ -1,5 +1,6 @@
 package com.mtxsim
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
@@ -7,10 +8,11 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
-import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.widget.Button
-import kotlinx.android.synthetic.main.view_items_dialog.view.*
+import android.widget.RadioButton
+import kotlinx.android.synthetic.main.dialog_buy_vp.view.*
+import kotlinx.android.synthetic.main.dialog_view_items.view.*
 
 class MainActivity : AppCompatActivity(), MainView {
 
@@ -32,7 +34,8 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     override fun updateVP() {
-        findViewById<TextView>(R.id.textViewVPCount).text = presenter.getVP().toString()
+        val vp = presenter.getVP().toString() + "VP"
+        findViewById<TextView>(R.id.textViewVPCount).text = vp
     }
 
     override fun updateItems() {
@@ -43,41 +46,49 @@ class MainActivity : AppCompatActivity(), MainView {
         Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()
     }
 
+    @SuppressLint("ResourceType")
     private fun buyVPDialog(){
-        val dialogBuilder = AlertDialog.Builder(this)
         val pValues = presenter.getPurchaseValues()
+        if(pValues.isEmpty()){
+            displayMessage("Error. Try again later.")
+            return
+        }
 
-        var selection = 0
-        //dialogBuilder.setMessage(getString(R.string.ChooseVpAmount))
-        dialogBuilder.setSingleChoiceItems(getPvCharSeqArray(pValues), selection)
-            { _, i -> selection = i}
-        dialogBuilder.setPositiveButton("Buy", DialogInterface.OnClickListener {
-                    dialog, _ -> dialog.dismiss()
-                    presenter.buyVP(pValues[selection])
-            })
-        dialogBuilder.setNegativeButton("Cancel", DialogInterface.OnClickListener {
-                    dialog, _ -> dialog.cancel()
-            })
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_buy_vp, null)
+        val dialogBuilder = AlertDialog.Builder(this)
+            .setView(dialogView)
+
+        val rGroup = dialogView.radioGroup
+        for (i in 0 until pValues.size) {
+            val rb = RadioButton(this)
+            rb.text = getPvString(pValues[i])
+            rb.id = i
+            rGroup.addView(rb)
+        }
+
+        if(pValues.size > 5)
+            rGroup.check(4)
+        else
+            rGroup.check(0)
 
         val alert = dialogBuilder.create()
-        alert.setTitle("VP Purchase")
+        dialogView.buttonCancel.setOnClickListener {alert.dismiss()}
+        dialogView.buttonBuy.setOnClickListener {
+            alert.dismiss()
+            presenter.buyVP(pValues[rGroup.checkedRadioButtonId])
+        }
         alert.show()
     }
 
     private fun viewItemsDialog(){
-        val mDialogView = LayoutInflater.from(this).inflate(R.layout.view_items_dialog, null)
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_view_items, null)
+        val dialogBuilder = AlertDialog.Builder(this)
+            .setView(dialogView)
+        val  alert = dialogBuilder.create()
 
-
-        val mBuilder = AlertDialog.Builder(this)
-            .setView(mDialogView)
-
-        val  mAlertDialog = mBuilder.show()
-
-        mDialogView.buttonReturn.setOnClickListener {
-            //dismiss dialog
-            mAlertDialog.dismiss()
-        }
-        mDialogView.textViewItemList.text = presenter.getItems().toString()
+        dialogView.buttonReturn.setOnClickListener {alert.dismiss()}
+        dialogView.textViewItemList.text = presenter.getItems().toString()
+        alert.show()
     }
 
     private fun selectedVpValue(pvs: List<PurchaseValues>, selection: Int){
