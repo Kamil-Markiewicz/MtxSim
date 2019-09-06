@@ -4,74 +4,116 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorBackground"
     tools:context=".MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
+        android:background="@color/colorBackground"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/textViewVPTip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/current_vp" />
-
-        <LinearLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:layout_margin="6sp">
 
-            <TextView
-                android:id="@+id/textViewVPCount"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/zero_string" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textViewVPTip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/current_vp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textViewVPCount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/zero_string" />
+
+                    <Button
+                        android:id="@+id/buttonBuyVP"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="onClickBuyVP"
+                        android:text="@string/buy_vp" />
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="6sp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textViewItemsTip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/obtained_items" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textViewItemsCount"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/zero_string" />
+
+                    <Button
+                        android:id="@+id/buttonBuyItem"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:onClick="onClickBuyItem"
+                        android:text="@string/buy_items" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/buttonViewItems"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:onClick="onClickViewItemList"
+                    android:text="@string/view_item_list" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="6sp">
 
             <Button
-                android:id="@+id/buttonBuyVP"
+                android:id="@+id/buttonDebug"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:onClick="onClickBuyVP"
-                android:text="@string/buy_vp" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/textViewItemsTip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/obtained_items" />
-
-        <TextView
-            android:id="@+id/textViewItemsCount"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/zero_string" />
-
-        <Button
-            android:id="@+id/buttonBuyItem"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onClickBuyItem"
-            android:text="@string/buy_items" />
-
-        <Button
-            android:id="@+id/buttonViewItems"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onClickViewItemList"
-            android:text="@string/view_item_list" />
-
-        <Button
-            android:id="@+id/buttonDebug"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:onClick="onClickDebug"
-            android:text="@string/debug"
-            android:visibility="gone" />
+                android:onClick="onClickDebug"
+                android:text="@string/debug"
+                android:visibility="gone" />
+        </androidx.cardview.widget.CardView>
 
     </LinearLayout>
 
