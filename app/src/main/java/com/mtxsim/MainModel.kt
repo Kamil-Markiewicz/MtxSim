@@ -1,11 +1,6 @@
 package com.mtxsim
 
-import android.R.id.edit
-import android.content.SharedPreferences.Editor
-import android.content.Context.MODE_PRIVATE
 import android.content.SharedPreferences
-
-
 
 class MainModel(private var prefs: SharedPreferences): IMainModel{
 
@@ -13,9 +8,7 @@ class MainModel(private var prefs: SharedPreferences): IMainModel{
     private val PREFIX_LIST = listOf("Big", "Small", "Expensive", "Cheap", "Clean", "Dirty", "Old")
     private val ITEM_LIST = listOf("Bowl", "Table", "Knife", "Chair", "Spoon", "Bed", "Mug")
     private val VP_KEY = "ownedVP"
-
-    private var vp: Int = 0
-    private var items: ArrayList<String> = ArrayList()
+    private val ITEMS_KEY = "ownedItems"
 
     override fun buyVP(pv: PurchaseValues): Boolean {
         var virtualPoints = loadVP()
@@ -27,10 +20,13 @@ class MainModel(private var prefs: SharedPreferences): IMainModel{
     override fun buyItem(): String {
         var virtualPoints = loadVP()
         if(virtualPoints >= ITEM_COST){
+            val itemMap = loadItems()
             val generatedItem = generateRandomItem()
-            items.add(generatedItem)
+            if (!itemMap.containsKey(generatedItem)) itemMap[generatedItem] = 1
+            else itemMap[generatedItem] = (itemMap[generatedItem]!! + 1)
             virtualPoints -= ITEM_COST
             saveVP(virtualPoints)
+            saveItems(itemMap)
             return generatedItem
         }
         return ""
@@ -39,11 +35,13 @@ class MainModel(private var prefs: SharedPreferences): IMainModel{
     override fun getVpAmount(): Int = loadVP()
 
     override fun getItemAmount(): Int {
-        return items.size
+        return calculateItemCount(loadItems())
     }
 
     override fun getItems(): ArrayList<String> {
-        return items
+        val itemStrings = ArrayList<String>()
+        for ((item, count) in loadItems()) for (i in 1..count) itemStrings.add(item)
+        return itemStrings
     }
 
     override fun getPurchaseValues(): List<PurchaseValues> {
@@ -60,27 +58,49 @@ class MainModel(private var prefs: SharedPreferences): IMainModel{
     override fun getItemCost(): Int = ITEM_COST
 
     override fun generateRandomItem(): String {
-        val prefix = PREFIX_LIST[((0 until PREFIX_LIST.size).random())]
-        val item = ITEM_LIST[((0 until ITEM_LIST.size).random())]
+        val prefix = PREFIX_LIST[((PREFIX_LIST.indices).random())]
+        val item = ITEM_LIST[((ITEM_LIST.indices).random())]
         return "$prefix $item"
     }
 
     override fun debugWipe() {
         saveVP(0)
+        saveItems(mapOf<String, Int>())
     }
 
-    private fun saveProgress() {
-        with (prefs.edit()) {
-            putInt(VP_KEY, vp)
-            apply()
-        }
-    }
-
-    private fun loadProgress(){
-        vp = loadVP()
+    private fun calculateItemCount(itemMap: Map<String, Int>): Int {
+        val values = itemMap.values
+        var total = 0
+        for(v in values)
+            total += v
+        return total
     }
 
     private fun loadVP(): Int = prefs.getInt(VP_KEY, 0)
+
+    private fun loadItems(): MutableMap<String, Int> {
+        val str = prefs.getString(ITEMS_KEY, "")!!
+        val itemMap = mutableMapOf<String, Int>()
+        val itemSets = str.split(";\n")
+        for(itemSet in itemSets){
+            if (!itemSet.contains(";")) continue
+            val itemCount = itemSet.split(";")
+            for (i in 1..itemCount[1].toInt()) {
+                if (!itemMap.containsKey(itemCount[0])) itemMap[itemCount[0]] = 1
+                else itemMap[itemCount[0]] = (itemMap[itemCount[0]]!! + 1)
+            }
+        }
+        return itemMap
+    }
+
+    private fun saveItems(itemMap: Map<String, Int>){
+        val itemsSB = StringBuilder()
+        for ((item, count) in itemMap) itemsSB.append("$item;$count;\n")
+        with (prefs.edit()) {
+            putString(ITEMS_KEY, itemsSB.toString())
+            apply()
+        }
+    }
 
     private fun saveVP(virtualPoints: Int){
         with (prefs.edit()) {
@@ -88,5 +108,4 @@ class MainModel(private var prefs: SharedPreferences): IMainModel{
             apply()
         }
     }
-
 }

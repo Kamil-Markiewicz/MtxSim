@@ -12,7 +12,9 @@ import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.RadioButton
 import kotlinx.android.synthetic.main.dialog_buy_vp.view.*
+import kotlinx.android.synthetic.main.dialog_debug.view.*
 import kotlinx.android.synthetic.main.dialog_view_items.view.*
+import kotlinx.android.synthetic.main.dialog_view_items.view.buttonReturn
 
 class MainActivity : AppCompatActivity(), MainView {
 
@@ -66,10 +68,8 @@ class MainActivity : AppCompatActivity(), MainView {
             rGroup.addView(rb)
         }
 
-        if(pValues.size > 5)
-            rGroup.check(4)
-        else
-            rGroup.check(0)
+        if(pValues.size > 5) rGroup.check(4)
+        else rGroup.check(0)
 
         val alert = dialogBuilder.create()
         dialogView.buttonCancel.setOnClickListener {alert.dismiss()}
@@ -91,14 +91,24 @@ class MainActivity : AppCompatActivity(), MainView {
         alert.show()
     }
 
+    private fun viewDebugDialog(){
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_debug, null)
+        val dialogBuilder = AlertDialog.Builder(this)
+            .setView(dialogView)
+        val  alert = dialogBuilder.create()
+
+        dialogView.buttonReturn.setOnClickListener {alert.dismiss()}
+        dialogView.buttonClearVp.setOnClickListener {presenter.debugWipe()}
+        alert.show()
+    }
+
     private fun selectedVpValue(pvs: List<PurchaseValues>, selection: Int){
         displayMessage(getPvString(pvs[selection]))
     }
 
     private fun getPvCharSeqArray(pvs: List<PurchaseValues>): Array<CharSequence> {
         val strings = ArrayList<CharSequence>()
-        for(i in 0 until pvs.size)
-            strings.add(getPvString(pvs[i]))
+        for(pv in pvs) strings.add(getPvString(pv))
         return strings.toTypedArray()
     }
 
@@ -121,7 +131,7 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     fun onClickDebug(view: View){
-        presenter.debugWipe()
+        viewDebugDialog()
     }
 
     override fun onDestroy() {

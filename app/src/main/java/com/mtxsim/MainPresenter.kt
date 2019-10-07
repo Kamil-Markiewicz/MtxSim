@@ -22,8 +22,7 @@ class MainPresenter(private var mainView: MainView?, val model: IMainModel): IMa
             mainView?.updateVP()
             mainView?.displayMessage("You have purchased:\n" + pv.vpGiven + "VP")
         }
-        else
-            mainView?.displayMessage("Error during purchasing VP")
+        else mainView?.displayMessage("Error during purchasing VP")
     }
 
     override fun buyItem(){
@@ -35,8 +34,7 @@ class MainPresenter(private var mainView: MainView?, val model: IMainModel): IMa
                 mainView?.updateVP()
                 mainView?.updateItems()
                 mainView?.displayMessage("You have received:\n$itemString!")
-            } else
-                mainView?.displayMessage("Error during purchasing item")
+            } else mainView?.displayMessage("Error during purchasing item")
         }
     }
 

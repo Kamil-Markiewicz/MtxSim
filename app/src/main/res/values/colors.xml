@@ -6,4 +6,5 @@
     <color name="colorZero">#000000</color>
     <color name="colorFull">#FFFFFF</color>
     <color name="colorBackground">#E1F5FE</color>
+    <color name="colorCard">#B3E5FC</color>
 </resources>

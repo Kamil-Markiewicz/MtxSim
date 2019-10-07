@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Debug Options" />
+
+        <Button
+            android:id="@+id/buttonClearVp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="onClickDebug"
+            android:text="Clear VP"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/buttonClearItems"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Clear Items" />
+
+        <Button
+            android:id="@+id/buttonReturn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/back" />
+
+    </LinearLayout>
+</ScrollView>
