@@ -11,6 +11,8 @@ import android.widget.Toast
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.RadioButton
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.dialog_buy_vp.view.*
 import kotlinx.android.synthetic.main.dialog_debug.view.*
 import kotlinx.android.synthetic.main.dialog_view_items.view.*
@@ -87,7 +89,16 @@ class MainActivity : AppCompatActivity(), MainView {
         val  alert = dialogBuilder.create()
 
         dialogView.buttonReturn.setOnClickListener {alert.dismiss()}
-        dialogView.textViewItemList.text = presenter.getItems().toString()
+
+        val itemList = presenter.getItems().toTypedArray()
+        val viewManager = LinearLayoutManager(this)
+        val viewAdapter = RecyclerAdapter(itemList)
+
+        dialogView.recyclerItemList.apply {
+            setHasFixedSize(false)
+            layoutManager = viewManager
+            adapter = viewAdapter
+        }
         alert.show()
     }
 
