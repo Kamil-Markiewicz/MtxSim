@@ -11,4 +11,5 @@
     <string name="vp_key">ownedVP</string>
     <string name="view_item_list">View Item List</string>
     <string name="debug">Debug</string>
+    <string name="placeholder">PLACEHOLDER</string>
 </resources>

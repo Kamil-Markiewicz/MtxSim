@@ -40,7 +40,7 @@ class MainModel(private var prefs: SharedPreferences): IMainModel{
 
     override fun getItems(): ArrayList<String> {
         val itemStrings = ArrayList<String>()
-        for ((item, count) in loadItems()) itemStrings.add(count.toString()+ "\t" + item)
+        for ((item, count) in loadItems()) itemStrings.add("$count;$item")
         return itemStrings
     }
 
