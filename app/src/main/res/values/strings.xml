@@ -1,15 +1,25 @@
 <resources>
     <string name="app_name">MtxSim</string>
-    <string name="current_vp">Current Virtual Points:</string>
+    <string name="virtual_points">Virtual Points</string>
     <string name="buy_vp">Buy VP</string>
     <string name="zero_string">0</string>
-    <string name="obtained_items">Obtained Virtual Items:</string>
-    <string name="buy_items">Buy Item</string>
-    <string name="ChooseVpAmount">Choose the amount of VP to buy:</string>
-    <string name="purchased_items_list">Purchased Items List:</string>
+    <string name="obtained_items">Virtual Items</string>
+    <string name="buy_item">Buy Item</string>
+    <string name="choose_vp_amount">Purchase VP</string>
+    <string name="purchased_items_list">Purchased Items List</string>
     <string name="back">Return</string>
     <string name="vp_key">ownedVP</string>
     <string name="view_item_list">View Item List</string>
     <string name="debug">Debug</string>
     <string name="placeholder">PLACEHOLDER</string>
+    <string name="buy">Buy</string>
+    <string name="debug_options">Debug Options</string>
+    <string name="clear_vp">Clear VP</string>
+    <string name="clear_items">Clear Items</string>
+    <string name="minus">-</string>
+    <string name="plus">+</string>
+    <string name="choose_item_amount">Purchase Items</string>
+    <string name="current_vp">Current VP</string>
+    <string name="cost">Cost</string>
+    <string name="last_action">Last Action</string>
 </resources>

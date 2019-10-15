@@ -7,7 +7,7 @@ interface IMainPresenter {
     fun getItemCount(): Int
     fun getItemCost(): Int
     fun buyVP(pv: PurchaseValues)
-    fun buyItem()
+    fun buyItems(count: Int)
     fun getPurchaseValues(): List<PurchaseValues>
     fun debugWipe()
 

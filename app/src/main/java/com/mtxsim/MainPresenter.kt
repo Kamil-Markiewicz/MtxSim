@@ -25,7 +25,7 @@ class MainPresenter(private var mainView: MainView?, val model: IMainModel): IMa
         else mainView?.displayMessage("Error during purchasing VP")
     }
 
-    override fun buyItem(){
+    override fun buyItems(count: Int){
         if(model.getVpAmount() < model.getItemCost())
             mainView?.displayMessage("Not enough VP to buy item!")
         else {

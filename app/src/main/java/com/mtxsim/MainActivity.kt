@@ -7,13 +7,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import android.widget.Toast
 import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.RadioButton
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.dialog_buy_items.view.*
 import kotlinx.android.synthetic.main.dialog_buy_vp.view.*
+import kotlinx.android.synthetic.main.dialog_buy_vp.view.buttonBuy
+import kotlinx.android.synthetic.main.dialog_buy_vp.view.buttonCancel
 import kotlinx.android.synthetic.main.dialog_debug.view.*
 import kotlinx.android.synthetic.main.dialog_view_items.view.*
 import kotlinx.android.synthetic.main.dialog_view_items.view.buttonReturn
@@ -28,13 +30,10 @@ class MainActivity : AppCompatActivity(), MainView {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         presenter = MainPresenter(this, MainModel(this.getPreferences(Context.MODE_PRIVATE)))
-
-        if(DEBUG_MODE) {
-            val buttonDebug = findViewById<Button>(R.id.buttonDebug)
-            buttonDebug.visibility = View.VISIBLE
-        }
         updateVP()
         updateItems()
+
+        if(DEBUG_MODE) {findViewById<CardView>(R.id.cardDebug).visibility = View.VISIBLE}
     }
 
     override fun updateVP() {
@@ -47,7 +46,8 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     override fun displayMessage(msg: String) {
-        Toast.makeText(this@MainActivity, msg, Toast.LENGTH_SHORT).show()
+        findViewById<TextView>(R.id.textViewLastActionText).text = msg
+        findViewById<CardView>(R.id.cardAction).visibility = View.VISIBLE
     }
 
     @SuppressLint("ResourceType")
@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity(), MainView {
             .setView(dialogView)
 
         val rGroup = dialogView.radioGroup
-        for (i in 0 until pValues.size) {
+        for (i in pValues.indices) {
             val rb = RadioButton(this)
             rb.text = getPvString(pValues[i])
             rb.id = i
@@ -80,6 +80,46 @@ class MainActivity : AppCompatActivity(), MainView {
             presenter.buyVP(pValues[rGroup.checkedRadioButtonId])
         }
         alert.show()
+    }
+
+    private fun buyItemsDialog(){
+        val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_buy_items, null)
+        val dialogBuilder = AlertDialog.Builder(this)
+            .setView(dialogView)
+        val  alert = dialogBuilder.create()
+
+        var itemsToBuy = 1
+        val itemCost = presenter.getItemCost()
+        val buyCountText = dialogView.textViewBuyCount
+        val itemCostText = dialogView.textViewItemCost
+        dialogView.textViewItemVP.text = presenter.getVP().toString() + "VP"
+        updateBuyFields(buyCountText, itemCostText, itemsToBuy, itemCost)
+
+        dialogView.buttonMinus.setOnClickListener {
+            if(itemsToBuy > 0){
+                itemsToBuy--
+                updateBuyFields(buyCountText, itemCostText, itemsToBuy, itemCost)
+            }
+
+        }
+        dialogView.buttonPlus.setOnClickListener {
+            itemsToBuy++
+            updateBuyFields(buyCountText, itemCostText, itemsToBuy, itemCost)
+        }
+
+        dialogView.buttonCancel.setOnClickListener {alert.dismiss()}
+        dialogView.buttonBuy.setOnClickListener {
+            presenter.buyItems(itemsToBuy)
+            alert.dismiss()
+        }
+
+        alert.show()
+    }
+
+    private fun updateBuyFields(buyCountField: TextView, itemCostField: TextView,
+                                itemsToBuy: Int, itemCost: Int){
+        buyCountField.text = itemsToBuy.toString()
+        itemCostField.text = (itemsToBuy*itemCost).toString() + "VP"
     }
 
     private fun viewItemsDialog(){
@@ -134,7 +174,7 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     fun onClickBuyItem(view: View){
-        presenter.buyItem()
+        buyItemsDialog()
     }
 
     fun onClickViewItemList(view: View){

@@ -12,7 +12,8 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/ChooseVpAmount" />
+            android:background="@color/colorCard"
+            android:text="@string/choose_vp_amount" />
 
         <RadioGroup
             android:id="@+id/radioGroup"
@@ -25,21 +26,24 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            style="?android:attr/buttonBarStyle">
 
             <Button
                 android:id="@+id/buttonCancel"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="@android:string/cancel" />
+                android:text="@android:string/cancel"
+                style="?android:attr/buttonBarButtonStyle"/>
 
             <Button
                 android:id="@+id/buttonBuy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Buy" />
+                android:text="@string/buy"
+                style="?android:attr/buttonBarButtonStyle"/>
         </LinearLayout>
 
     </LinearLayout>

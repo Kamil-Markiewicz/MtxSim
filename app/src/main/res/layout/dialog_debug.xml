@@ -12,21 +12,22 @@
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Debug Options" />
+            android:background="@color/colorCard"
+            android:text="@string/debug_options" />
 
         <Button
             android:id="@+id/buttonClearVp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:onClick="onClickDebug"
-            android:text="Clear VP"
+            android:text="@string/clear_vp"
             android:visibility="visible" />
 
         <Button
             android:id="@+id/buttonClearItems"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Clear Items" />
+            android:text="@string/clear_items" />
 
         <Button
             android:id="@+id/buttonReturn"
