@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity(), MainView {
 
     @SuppressLint("ResourceType")
     private fun buyVPDialog(){
+        findViewById<CardView>(R.id.cardAction).visibility = View.GONE
         val pValues = presenter.getPurchaseValues()
         if(pValues.isEmpty()){
             displayMessage("Error. Try again later.")
@@ -83,6 +84,7 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     private fun buyItemsDialog(){
+        findViewById<CardView>(R.id.cardAction).visibility = View.GONE
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_buy_items, null)
         val dialogBuilder = AlertDialog.Builder(this)
             .setView(dialogView)
@@ -123,6 +125,7 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     private fun viewItemsDialog(){
+        findViewById<CardView>(R.id.cardAction).visibility = View.GONE
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_view_items, null)
         val dialogBuilder = AlertDialog.Builder(this)
             .setView(dialogView)
@@ -143,6 +146,7 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     private fun viewDebugDialog(){
+        findViewById<CardView>(R.id.cardAction).visibility = View.GONE
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_debug, null)
         val dialogBuilder = AlertDialog.Builder(this)
             .setView(dialogView)

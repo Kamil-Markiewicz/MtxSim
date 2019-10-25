@@ -26,10 +26,10 @@ class MainPresenter(private var mainView: MainView?, val model: IMainModel): IMa
     }
 
     override fun buyItems(count: Int){
-        if(model.getVpAmount() < model.getItemCost())
+        if(model.getVpAmount() < (model.getItemCost()*count))
             mainView?.displayMessage("Not enough VP to buy item!")
         else {
-            val itemString = model.buyItem()
+            val itemString = model.buyItems(count)
             if (itemString != "") {
                 mainView?.updateVP()
                 mainView?.updateItems()

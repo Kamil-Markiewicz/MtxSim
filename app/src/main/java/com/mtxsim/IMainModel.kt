@@ -2,7 +2,7 @@ package com.mtxsim
 
 interface IMainModel{
     fun buyVP(pv: PurchaseValues): Boolean
-    fun buyItem(): String
+    fun buyItems(count: Int): Map<String, Int>
     fun getVpAmount(): Int
     fun getItems(): ArrayList<String>
     fun getItemAmount(): Int

@@ -19,7 +19,7 @@
     <string name="minus">-</string>
     <string name="plus">+</string>
     <string name="choose_item_amount">Purchase Items</string>
-    <string name="current_vp">Current VP</string>
+    <string name="current_vp">Balance</string>
     <string name="cost">Cost</string>
     <string name="last_action">Last Action</string>
 </resources>

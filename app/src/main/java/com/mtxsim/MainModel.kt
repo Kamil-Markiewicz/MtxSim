@@ -17,19 +17,26 @@ class MainModel(private var prefs: SharedPreferences): IMainModel{
         return true
     }
 
-    override fun buyItem(): String {
+    override fun buyItems(count: Int): Map<String, Int> {
         var virtualPoints = loadVP()
-        if(virtualPoints >= ITEM_COST){
-            val itemMap = loadItems()
+        val boughtMap = mutableMapOf<String, Int>()
+        if(virtualPoints < (ITEM_COST*count)) return boughtMap
+
+        val itemMap = loadItems()
+
+        for(i in 0 until count){
             val generatedItem = generateRandomItem()
+            if (!boughtMap.containsKey(generatedItem)) boughtMap[generatedItem] = 1
+            else boughtMap[generatedItem] = (boughtMap[generatedItem]!! + 1)
+
             if (!itemMap.containsKey(generatedItem)) itemMap[generatedItem] = 1
             else itemMap[generatedItem] = (itemMap[generatedItem]!! + 1)
-            virtualPoints -= ITEM_COST
-            saveVP(virtualPoints)
-            saveItems(itemMap)
-            return generatedItem
         }
-        return ""
+
+        virtualPoints -= (ITEM_COST * count)
+        saveVP(virtualPoints)
+        saveItems(itemMap)
+        return boughtMap
     }
 
     override fun getVpAmount(): Int = loadVP()
