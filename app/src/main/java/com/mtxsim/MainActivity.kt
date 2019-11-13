@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.TextView
 import android.view.LayoutInflater
-import android.widget.Button
 import android.widget.RadioButton
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,10 +28,12 @@ class MainActivity : AppCompatActivity(), MainView {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
         presenter = MainPresenter(this, MainModel(this.getPreferences(Context.MODE_PRIVATE)))
         updateVP()
         updateItems()
 
+        //Show debug button when in debug mode
         if(DEBUG_MODE) {findViewById<CardView>(R.id.cardDebug).visibility = View.VISIBLE}
     }
 
@@ -46,58 +47,75 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     override fun displayMessage(msg: String) {
+        //Populate message and show message field
         findViewById<TextView>(R.id.textViewLastActionText).text = msg
         findViewById<CardView>(R.id.cardAction).visibility = View.VISIBLE
     }
 
     @SuppressLint("ResourceType")
     private fun buyVPDialog(){
+        //Hide message box after new menu
         findViewById<CardView>(R.id.cardAction).visibility = View.GONE
-        val pValues = presenter.getPurchaseValues()
-        if(pValues.isEmpty()){
+
+        //Get list of vp points and corresponding prices
+        val pValuesList = presenter.getPurchaseValues()
+        if(pValuesList.isEmpty()){
+            //If the model returns no purchase value an error has occurred
             displayMessage("Error. Try again later.")
             return
         }
 
+        //Create dialog
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_buy_vp, null)
         val dialogBuilder = AlertDialog.Builder(this)
             .setView(dialogView)
+        val alert = dialogBuilder.create()
 
+        //Populate radio group with price options
         val rGroup = dialogView.radioGroup
-        for (i in pValues.indices) {
+        for (i in pValuesList.indices) {
             val rb = RadioButton(this)
-            rb.text = getPvString(pValues[i])
+            rb.text = getPvString(pValuesList[i])
             rb.id = i
             rGroup.addView(rb)
         }
 
-        if(pValues.size > 5) rGroup.check(4)
+        //Select default price to 4th item if enough in the list
+        if(pValuesList.size > 5) rGroup.check(4)
         else rGroup.check(0)
 
-        val alert = dialogBuilder.create()
+        //Hook up buttons to events and show dialog
         dialogView.buttonCancel.setOnClickListener {alert.dismiss()}
         dialogView.buttonBuy.setOnClickListener {
             alert.dismiss()
-            presenter.buyVP(pValues[rGroup.checkedRadioButtonId])
+            presenter.buyVP(pValuesList[rGroup.checkedRadioButtonId])
         }
         alert.show()
     }
 
     private fun buyItemsDialog(){
+        //Hide message box after new menu
         findViewById<CardView>(R.id.cardAction).visibility = View.GONE
+
+        //Create dialog
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_buy_items, null)
         val dialogBuilder = AlertDialog.Builder(this)
             .setView(dialogView)
         val  alert = dialogBuilder.create()
 
+        //Display balance
+        dialogView.textViewItemVP.text = presenter.getVP().toString() + "VP"
+
+        //Store price of items in cart
         var itemsToBuy = 1
         val itemCost = presenter.getItemCost()
         val buyCountText = dialogView.textViewBuyCount
         val itemCostText = dialogView.textViewItemCost
-        dialogView.textViewItemVP.text = presenter.getVP().toString() + "VP"
         updateBuyFields(buyCountText, itemCostText, itemsToBuy, itemCost)
 
+        //Hook up buttons to events and show dialog
         dialogView.buttonMinus.setOnClickListener {
+            //If current count of items in the cart is more than 0, subtract one and update GUI
             if(itemsToBuy > 0){
                 itemsToBuy--
                 updateBuyFields(buyCountText, itemCostText, itemsToBuy, itemCost)
@@ -105,19 +123,26 @@ class MainActivity : AppCompatActivity(), MainView {
 
         }
         dialogView.buttonPlus.setOnClickListener {
+            //Add another item to cart and update GUI
             itemsToBuy++
             updateBuyFields(buyCountText, itemCostText, itemsToBuy, itemCost)
         }
-
-        dialogView.buttonCancel.setOnClickListener {alert.dismiss()}
         dialogView.buttonBuy.setOnClickListener {
             presenter.buyItems(itemsToBuy)
             alert.dismiss()
         }
-
+        dialogView.buttonCancel.setOnClickListener {alert.dismiss()}
         alert.show()
     }
 
+    /**
+     * This function updates 2 text fields with the item count and their total cost.
+     *
+     * @param buyCountField The textView displaying the item count
+     * @param itemCostField The textView displaying the total cost of the items
+     * @param itemsToBuy Amount of items being purchased
+     * @param itemCost The cost of each item
+     */
     private fun updateBuyFields(buyCountField: TextView, itemCostField: TextView,
                                 itemsToBuy: Int, itemCost: Int){
         buyCountField.text = itemsToBuy.toString()
@@ -125,33 +150,39 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     private fun viewItemsDialog(){
+        //Hide message box after new menu
         findViewById<CardView>(R.id.cardAction).visibility = View.GONE
+
+        //Create dialog
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_view_items, null)
         val dialogBuilder = AlertDialog.Builder(this)
             .setView(dialogView)
         val  alert = dialogBuilder.create()
 
-        dialogView.buttonReturn.setOnClickListener {alert.dismiss()}
-
-        val itemList = presenter.getItems().toTypedArray()
+        //Populate recyclerList with owned items
         val viewManager = LinearLayoutManager(this)
-        val viewAdapter = RecyclerAdapter(itemList)
-
         dialogView.recyclerItemList.apply {
             setHasFixedSize(false)
             layoutManager = viewManager
-            adapter = viewAdapter
+            adapter = RecyclerAdapter(presenter.getItems().toTypedArray())
         }
+
+        //Hook up button to event and show dialog
+        dialogView.buttonReturn.setOnClickListener {alert.dismiss()}
         alert.show()
     }
 
     private fun viewDebugDialog(){
+        //Hide message box after new menu
         findViewById<CardView>(R.id.cardAction).visibility = View.GONE
+
+        //Create dialog
         val dialogView = LayoutInflater.from(this).inflate(R.layout.dialog_debug, null)
         val dialogBuilder = AlertDialog.Builder(this)
             .setView(dialogView)
         val  alert = dialogBuilder.create()
 
+        //Hook up buttons to events and show dialog
         dialogView.buttonReturn.setOnClickListener {alert.dismiss()}
         dialogView.buttonClearVp.setOnClickListener {presenter.debugWipe()}
         alert.show()
@@ -167,6 +198,9 @@ class MainActivity : AppCompatActivity(), MainView {
         return strings.toTypedArray()
     }
 
+    /**
+     * This function returns a readable string from a PurchaseValues item
+     */
     private fun getPvString(pv: PurchaseValues): String {
         val value = pv.value
         val vp = pv.vpGiven
@@ -190,6 +224,7 @@ class MainActivity : AppCompatActivity(), MainView {
     }
 
     override fun onDestroy() {
+        //Destroy presenter to ensure everything is terminated.
         presenter.onDestroy()
         super.onDestroy()
     }

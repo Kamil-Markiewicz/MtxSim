@@ -29,12 +29,23 @@ class MainPresenter(private var mainView: MainView?, val model: IMainModel): IMa
         if(model.getVpAmount() < (model.getItemCost()*count))
             mainView?.displayMessage("Not enough VP to buy item!")
         else {
-            val itemString = model.buyItems(count)
-            if (itemString != "") {
+            val bItemsMap = model.buyItems(count)
+            if (bItemsMap.isEmpty())
+                mainView?.displayMessage("Error during purchasing item")
+            else{
                 mainView?.updateVP()
                 mainView?.updateItems()
-                mainView?.displayMessage("You have received:\n$itemString!")
-            } else mainView?.displayMessage("Error during purchasing item")
+
+                val msgString = StringBuilder().append(
+                    "Purchased " + Utilities.calculateItemCount(bItemsMap).toString() + " items:\n")
+                var loopCounter = bItemsMap.size
+                for(itemSet in bItemsMap){
+                    msgString.append(itemSet.value.toString() + "x " + itemSet.key)
+                    loopCounter--
+                    if(loopCounter != 0) msgString.append("\n")
+                }
+                mainView?.displayMessage(msgString.toString())
+            }
         }
     }
 
@@ -45,6 +56,7 @@ class MainPresenter(private var mainView: MainView?, val model: IMainModel): IMa
     override fun debugWipe() {
         model.debugWipe()
         mainView?.updateVP()
+        mainView?.updateItems()
     }
 
     override fun onDestroy() {

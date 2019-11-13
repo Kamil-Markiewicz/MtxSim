@@ -42,7 +42,7 @@ class MainModel(private var prefs: SharedPreferences): IMainModel{
     override fun getVpAmount(): Int = loadVP()
 
     override fun getItemAmount(): Int {
-        return calculateItemCount(loadItems())
+        return Utilities.calculateItemCount(loadItems())
     }
 
     override fun getItems(): ArrayList<String> {
@@ -73,14 +73,6 @@ class MainModel(private var prefs: SharedPreferences): IMainModel{
     override fun debugWipe() {
         saveVP(0)
         saveItems(mapOf<String, Int>())
-    }
-
-    private fun calculateItemCount(itemMap: Map<String, Int>): Int {
-        val values = itemMap.values
-        var total = 0
-        for(v in values)
-            total += v
-        return total
     }
 
     private fun loadVP(): Int = prefs.getInt(VP_KEY, 0)
