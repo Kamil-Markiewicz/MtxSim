@@ -89,7 +89,7 @@
             style="?android:attr/buttonBarStyle">
 
             <Button
-                android:id="@+id/buttonCancel"
+                android:id="@+id/buttonCancelItems"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -97,7 +97,7 @@
                 style="?android:attr/buttonBarButtonStyle"/>
 
             <Button
-                android:id="@+id/buttonBuy"
+                android:id="@+id/buttonDialogBuyItems"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

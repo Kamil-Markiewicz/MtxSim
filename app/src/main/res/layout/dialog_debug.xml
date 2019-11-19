@@ -30,7 +30,7 @@
             android:text="@string/clear_items" />
 
         <Button
-            android:id="@+id/buttonReturn"
+            android:id="@+id/buttonReturnDebug"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/back" />

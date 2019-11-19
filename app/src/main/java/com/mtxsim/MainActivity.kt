@@ -3,24 +3,22 @@ package com.mtxsim
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
-import android.widget.TextView
 import android.view.LayoutInflater
+import android.view.View
 import android.widget.RadioButton
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.dialog_buy_items.view.*
 import kotlinx.android.synthetic.main.dialog_buy_vp.view.*
-import kotlinx.android.synthetic.main.dialog_buy_vp.view.buttonBuy
-import kotlinx.android.synthetic.main.dialog_buy_vp.view.buttonCancel
 import kotlinx.android.synthetic.main.dialog_debug.view.*
 import kotlinx.android.synthetic.main.dialog_view_items.view.*
-import kotlinx.android.synthetic.main.dialog_view_items.view.buttonReturn
 
 class MainActivity : AppCompatActivity(), MainView {
 
+    //Controls if the app displays debug functions
     private val DEBUG_MODE = true
 
     private lateinit var presenter: IMainPresenter
@@ -73,10 +71,10 @@ class MainActivity : AppCompatActivity(), MainView {
 
         //Populate radio group with price options
         val rGroup = dialogView.radioGroup
-        for (i in pValuesList.indices) {
+        for (pValue in pValuesList.indices) {
             val rb = RadioButton(this)
-            rb.text = getPvString(pValuesList[i])
-            rb.id = i
+            rb.text = getPvString(pValuesList[pValue])
+            rb.id = pValue
             rGroup.addView(rb)
         }
 
@@ -85,8 +83,8 @@ class MainActivity : AppCompatActivity(), MainView {
         else rGroup.check(0)
 
         //Hook up buttons to events and show dialog
-        dialogView.buttonCancel.setOnClickListener {alert.dismiss()}
-        dialogView.buttonBuy.setOnClickListener {
+        dialogView.buttonCancelVP.setOnClickListener {alert.dismiss()}
+        dialogView.buttonDialogBuyVP.setOnClickListener {
             alert.dismiss()
             presenter.buyVP(pValuesList[rGroup.checkedRadioButtonId])
         }
@@ -127,11 +125,11 @@ class MainActivity : AppCompatActivity(), MainView {
             itemsToBuy++
             updateBuyFields(buyCountText, itemCostText, itemsToBuy, itemCost)
         }
-        dialogView.buttonBuy.setOnClickListener {
+        dialogView.buttonDialogBuyItems.setOnClickListener {
             presenter.buyItems(itemsToBuy)
             alert.dismiss()
         }
-        dialogView.buttonCancel.setOnClickListener {alert.dismiss()}
+        dialogView.buttonCancelItems.setOnClickListener {alert.dismiss()}
         alert.show()
     }
 
@@ -164,11 +162,11 @@ class MainActivity : AppCompatActivity(), MainView {
         dialogView.recyclerItemList.apply {
             setHasFixedSize(false)
             layoutManager = viewManager
-            adapter = RecyclerAdapter(presenter.getItems().toTypedArray())
+            adapter = RecyclerAdapter(presenter.getItems().toList())
         }
 
         //Hook up button to event and show dialog
-        dialogView.buttonReturn.setOnClickListener {alert.dismiss()}
+        dialogView.buttonReturnItems.setOnClickListener {alert.dismiss()}
         alert.show()
     }
 
@@ -183,7 +181,7 @@ class MainActivity : AppCompatActivity(), MainView {
         val  alert = dialogBuilder.create()
 
         //Hook up buttons to events and show dialog
-        dialogView.buttonReturn.setOnClickListener {alert.dismiss()}
+        dialogView.buttonReturnDebug.setOnClickListener {alert.dismiss()}
         dialogView.buttonClearVp.setOnClickListener {presenter.debugWipe()}
         alert.show()
     }

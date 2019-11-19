@@ -3,12 +3,12 @@ package com.mtxsim
 interface IMainPresenter {
 
     fun getVP(): Int
-    fun getItems(): ArrayList<String>
+    fun getItems(): Map<String, Int>
     fun getItemCount(): Int
     fun getItemCost(): Int
+    fun getPurchaseValues(): List<PurchaseValues>
     fun buyVP(pv: PurchaseValues)
     fun buyItems(count: Int)
-    fun getPurchaseValues(): List<PurchaseValues>
     fun debugWipe()
 
     fun onDestroy()
